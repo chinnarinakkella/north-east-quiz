@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tourism in North East India Quiz</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0e3c5d, #1c6ea4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+}
+
+.quiz-container {
+    width: 700px;
+    max-width: 95%;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.option {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    background: #144e75;
+    border: 2px solid white;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.option:hover {
+    background: #1c6ea4;
+}
+
+.correct {
+    background: green !important;
+}
+
+.wrong {
+    background: red !important;
+}
+
+#nextBtn {
+    display: none;
+    padding: 10px 20px;
+    background: orange;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.progress {
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+    <div class="progress" id="progress"></div>
+    <h2 id="question"></h2>
+    <div id="options"></div>
+    <button id="nextBtn">Next</button>
+</div>
+
+<script>
+
+const questions = [
+{question:"Which state is known as the gateway to North East India?",options:["Manipur","Assam","Mizoram","Nagaland"],correct:1},
+{question:"North East India is popularly called:",options:["Eight Brothers","Seven Sisters","Seven Hills","Eastern States"],correct:1},
+{question:"The best time to visit North East India is:",options:["Summer","Monsoon","Winter","Late Autumn to Spring"],correct:3},
+{question:"The largest city in North East India is:",options:["Shillong","Aizawl","Guwahati","Imphal"],correct:2},
+{question:"The Brahmaputra River flows mainly through:",options:["Manipur","Assam","Mizoram","Tripura"],correct:1},
+{question:"Living root bridges are found in:",options:["Nagaland","Meghalaya","Arunachal Pradesh","Tripura"],correct:1},
+{question:"Kaziranga National Park is famous for:",options:["Bengal Tiger","Snow Leopard","One-horned Rhinoceros","Red Panda"],correct:2},
+{question:"The wettest place on earth, Mawsynram, is in:",options:["Assam","Meghalaya","Arunachal Pradesh","Manipur"],correct:1},
+{question:"Loktak Lake is located in:",options:["Manipur","Mizoram","Nagaland","Assam"],correct:0},
+{question:"Majuli Island is famous for:",options:["Tea Gardens","River Island","Monasteries","Waterfalls"],correct:1},
+{question:"Manas National Park is located in:",options:["Assam","Tripura","Mizoram","Nagaland"],correct:0},
+{question:"Namdapha National Park is in:",options:["Manipur","Arunachal Pradesh","Meghalaya","Sikkim"],correct:1},
+{question:"Pobitora Wildlife Sanctuary is famous for:",options:["Elephants","One-horned Rhinoceros","Tigers","Bears"],correct:1},
+{question:"Dzükou Valley is located in:",options:["Assam","Nagaland","Tripura","Mizoram"],correct:1},
+{question:"The Red Panda is mainly found in:",options:["Sikkim","Assam","Manipur","Tripura"],correct:0},
+{question:"Bihu festival is celebrated in:",options:["Manipur","Assam","Nagaland","Mizoram"],correct:1},
+{question:"Hornbill Festival is celebrated in:",options:["Nagaland","Tripura","Meghalaya","Manipur"],correct:0},
+{question:"Sangai Festival is celebrated in:",options:["Mizoram","Assam","Manipur","Tripura"],correct:2},
+{question:"Wangala Festival is celebrated by the:",options:["Khasi Tribe","Garo Tribe","Mizo Tribe","Bodo Tribe"],correct:1},
+{question:"Cheraw dance belongs to:",options:["Assam","Mizoram","Nagaland","Tripura"],correct:1},
+{question:"Kamakhya Temple is located in:",options:["Guwahati","Imphal","Aizawl","Shillong"],correct:0},
+{question:"Tawang Monastery is in:",options:["Sikkim","Arunachal Pradesh","Nagaland","Meghalaya"],correct:1},
+{question:"Ujjayanta Palace is in:",options:["Tripura","Manipur","Assam","Mizoram"],correct:0},
+{question:"Unakoti rock carvings are in:",options:["Assam","Tripura","Meghalaya","Nagaland"],correct:1},
+{question:"Kohima War Cemetery is in:",options:["Assam","Nagaland","Mizoram","Manipur"],correct:1},
+{question:"River rafting in Siang River is popular in:",options:["Arunachal Pradesh","Assam","Tripura","Manipur"],correct:0},
+{question:"Caving is popular in:",options:["Meghalaya","Mizoram","Nagaland","Assam"],correct:0},
+{question:"Gurudongmar Lake is in:",options:["Assam","Sikkim","Nagaland","Manipur"],correct:1},
+{question:"Nathula Pass is located in:",options:["Meghalaya","Sikkim","Assam","Tripura"],correct:1},
+{question:"Ziro Valley is located in:",options:["Assam","Arunachal Pradesh","Manipur","Nagaland"],correct:1},
+{question:"Pitha is a traditional dish of:",options:["Assam","Mizoram","Manipur","Tripura"],correct:0},
+{question:"Eromba is a dish from:",options:["Assam","Manipur","Nagaland","Mizoram"],correct:1},
+{question:"Smoked pork dishes are famous in:",options:["Nagaland","Tripura","Assam","Meghalaya"],correct:0},
+{question:"Bamboo handicrafts are popular in:",options:["Mizoram","Assam","Meghalaya","All of these"],correct:3},
+{question:"Assam is famous for its:",options:["Silk","Marble","Diamonds","Sandalwood"],correct:0},
+{question:"The main international airport in Assam is:",options:["Dimapur Airport","Imphal Airport","Lokpriya Gopinath Bordoloi Airport","Agartala Airport"],correct:2},
+{question:"Inner Line Permit (ILP) is required to visit:",options:["Arunachal Pradesh","Nagaland","Mizoram","All of these"],correct:3},
+{question:"Shillong is the capital of:",options:["Assam","Meghalaya","Manipur","Mizoram"],correct:1},
+{question:"Gangtok is the capital of:",options:["Sikkim","Assam","Tripura","Nagaland"],correct:0},
+{question:"The Seven Sisters include all except:",options:["Sikkim","Assam","Manipur","Tripura"],correct:0},
+{question:"Cherrapunji is famous for:",options:["Tea Gardens","Heavy Rainfall","Snowfall","Desert"],correct:1},
+{question:"The capital of Nagaland is:",options:["Dimapur","Kohima","Mokokchung","Itanagar"],correct:1},
+{question:"The capital of Arunachal Pradesh is:",options:["Itanagar","Dispur","Aizawl","Agartala"],correct:0},
+{question:"The capital of Manipur is:",options:["Aizawl","Imphal","Shillong","Gangtok"],correct:1},
+{question:"The capital of Tripura is:",options:["Agartala","Dispur","Kohima","Shillong"],correct:0},
+{question:"The capital of Mizoram is:",options:["Imphal","Aizawl","Kohima","Dispur"],correct:1},
+{question:"Dispur is the capital of:",options:["Assam","Tripura","Nagaland","Sikkim"],correct:0},
+{question:"The capital of Sikkim is:",options:["Shillong","Gangtok","Kohima","Itanagar"],correct:1},
+{question:"Meghalaya means:",options:["Land of Rivers","Land of Clouds","Land of Mountains","Land of Valleys"],correct:1},
+{question:"Eco-tourism promotes:",options:["Environmental conservation","Pollution","Deforestation","Urbanization"],correct:0}
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const nextBtn = document.getElementById("nextBtn");
+const progressEl = document.getElementById("progress");
+
+function loadQuestion() {
+    nextBtn.style.display = "none";
+    optionsEl.innerHTML = "";
+
+    const q = questions[currentQuestion];
+    questionEl.textContent = q.question;
+    progressEl.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+
+    q.options.forEach((option, index) => {
+        const btn = document.createElement("button");
+        btn.classList.add("option");
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(btn, index);
+        optionsEl.appendChild(btn);
+    });
+}
+
+function checkAnswer(button, index) {
+    const correctIndex = questions[currentQuestion].correct;
+
+    if (index === correctIndex) {
+        button.classList.add("correct");
+        score++;
+        nextBtn.style.display = "inline-block";
+    } else {
+        button.classList.add("wrong");
+    }
+
+    Array.from(optionsEl.children).forEach(btn => {
+        btn.disabled = true;
+    });
+}
+
+nextBtn.onclick = () => {
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        questionEl.textContent = `Quiz Completed! Final Score: ${score} / ${questions.length}`;
+        optionsEl.innerHTML = "";
+        nextBtn.style.display = "none";
+        progressEl.textContent = "";
+    }
+};
+
+loadQuestion();
+
+</script>
+</body>
+</html>
