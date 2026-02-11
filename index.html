@@ -156,22 +156,26 @@ function loadQuestion() {
     });
 }
 
+
 function checkAnswer(button, index) {
-    const correctIndex = questions[currentQuestion].correct;
+        const correctIndex = questions[currentQuestion].correct;
 
-    if (index === correctIndex) {
-        button.classList.add("correct");
-        score++;
-        nextBtn.style.display = "inline-block";
-    } else {
-        button.classList.add("wrong");
-    }
+            if (index === correctIndex) {
+                    button.classList.add("correct");
+                         score++;
+                             nextBtn.style.display = "inline-block";
 
-    Array.from(optionsEl.children).forEach(btn => {
-        btn.disabled = true;
-    });
+                                // disable all buttons after correct answer
+                             Array.from(optionsEl.children).forEach(btn => {
+                                 btn.disabled = true;
+                        });
+
+                               } else {
+                                      button.classList.add("wrong");
+                                     button.disabled = true; // disable only wrong clicked button
+                          }
+         }
 }
-
 nextBtn.onclick = () => {
     currentQuestion++;
     if (currentQuestion < questions.length) {
